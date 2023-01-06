@@ -35,10 +35,43 @@ impl Default for Person {
 // If while parsing the age, something goes wrong, then return the default of Person
 // Otherwise, then return an instantiated Person object with the results
 
-// I AM NOT DONE
 
 impl From<&str> for Person {
     fn from(s: &str) -> Person {
+        // *&(^&*) просто какой-то, хотел нормально сделать
+        // оказалось что надо тупо везде дефолт возвращать по любому чиху
+        // впадлу переделывать, накидал костылей проверок
+        let mut result = Person::default();
+        if s.len()==0{
+            return result;
+        }
+        let mut words: Vec<String>= s.split(',').into_iter().map(|x| x.to_string()).collect();
+        let cp = s.contains(',');
+        if words.len()>2{
+            return result;
+        }
+        if words.len()!=2{
+            return result;
+        }
+        if words.len()>1{
+                let age = words[1].parse::<usize>();
+                if let Ok(age) = age {
+                    result.age=age;
+                } else {
+                    return Person::default();
+                }
+           println!("{:?}",words); 
+        }
+        if words.len()>0{
+            if words[0].len()!=0{
+                result.name=words.get_mut(0).unwrap().to_string();
+            } else {
+                return Person::default();
+            }
+        }
+         
+        return result;
+        
     }
 }
 
